@@ -11,20 +11,9 @@
 |
 */
 
-Route::get('/uppercase/{word}', function ($word) {
-    $newString = strtoupper($word);
-    $data['newString'] = $newString;
-    $data['oldString'] = $word;
+Route::get('/uppercase/{word}', 'HomeController@uppercase');
 
-    return view('uppercase', $data);
-});
-
-Route::get('/increment/{number}', function ($number) {
-    $number += 1;
-    $data['number'] = $number;
-
-    return view('increment', $data);
-});
+Route::get('/increment/{number}', 'HomeController@increment');
 
 
 Route::get('/add/{numberA}/{numberB}/', function ($numberA, $numberB) {
@@ -49,6 +38,7 @@ Route::get('/rolldice/{guess?}', function($guess = 2){
 	
 	return view('roll-dice', $data);
 });
+Route::get('/', 'HomeController@showWelcome');
 
     
 	
