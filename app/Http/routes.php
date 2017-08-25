@@ -14,6 +14,7 @@
 Route::get('/uppercase/{word}', 'HomeController@uppercase');
 
 Route::get('/increment/{number}', 'HomeController@increment');
+Route::get('/resetToZero/{number}', 'HomeController@resetToZero');
 
 
 Route::get('/add/{numberA}/{numberB}/', function ($numberA, $numberB) {
@@ -39,6 +40,8 @@ Route::get('/rolldice/{guess?}', function($guess = 2){
 	return view('roll-dice', $data);
 });
 Route::get('/', 'HomeController@showWelcome');
+
+Route::resource('posts','PostsController');
 
     
 	
