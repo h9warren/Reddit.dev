@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use Log;
+
 
 class PostsController extends Controller
 {
@@ -17,7 +20,9 @@ class PostsController extends Controller
     public function index()
     {
         //
-        return "this displays a listing of the resource.";
+        $posts = Post::all();
+        $data['posts'] = $posts;
+        return view('posts.index', $data);
     }
 
     /**
@@ -28,7 +33,8 @@ class PostsController extends Controller
     public function create()
     {
         //
-        return view('create');
+
+        return view('posts.create');
     }
 
     /**
@@ -41,7 +47,26 @@ class PostsController extends Controller
     {
         //
         // dd($request->all());
-        return "this stores a newly created resource in storage";
+        // return back()->withInput();
+
+        $rules = ['url'=>'required'];
+        $this->validate($request, $rules);
+
+        $post = new Post();
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->url = $request->url;
+        $post->created_by = 1;
+        $post->save();
+        Log::info($post);
+
+        // var_dump($request);
+
+        return \Redirect::action('PostsController@index');
+
+
+
+        // return view('posts.show');
     }
 
     /**
@@ -53,7 +78,11 @@ class PostsController extends Controller
     public function show($id)
     {
         //
-        return "show the specified resource";
+        $post = Post::find($id);
+        $data['post'] = $post;
+        $post = Post::findOrFail($id);
+            
+        return view('posts.show', $data);
     }
 
     /**
@@ -65,7 +94,11 @@ class PostsController extends Controller
     public function edit($id)
     {
         //
-        return "this gives us the form for editing a resource";
+        $post = Post::find($id);
+        $post = Post::findOrFail($id);
+        $data['post'] = $post;
+        return view('posts.edit', $data);
+
     }
 
     /**
@@ -77,9 +110,18 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        return "this updates a specified resource";
+        $rules = ['url'=>'required'];
+        $this->validate($request, $rules);
+        $post = Post::find($id);
+        $post = Post::findOrFail($id);
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->url = $request->url;
+        $post->created_by = 1;
+        $post->save();
+        return \Redirect::action('PostsController@show', $post->id);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -89,8 +131,10 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
-        return "this removes a specified resource from storage";
-
+        $post = Post::find($id);
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return \Redirect::action('PostsController@index');
     }
+
 }
