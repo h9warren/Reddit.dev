@@ -67,12 +67,13 @@ class UserSeeder extends Seeder
 
        foreach($users as $user=>$info) {
             
-            $name = $info['name'];
+            
             $name = new App\User();
             $name->name = $info['name'];
             $name->email = $info['email'];
-            $name->password = password_hash(($info['password']), PASSWORD_DEFAULT);
-            
+            $name->password = Hash::make($info['password']);
+            $name->save();
+
        }
 
     }

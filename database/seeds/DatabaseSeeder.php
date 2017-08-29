@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Deleting users records');
 
-        DB::table('users')->delete();
+        // DB::table('users')->delete();
 
-        $this->call('UserSeeder');
+        $this->call(UserSeeder::class);
     }
 }
