@@ -23,6 +23,7 @@ class PostsController extends Controller
         $posts = Post::paginate(3);
         $data['posts'] = $posts;
         return view('posts.index', $data);
+        
     }
 
     /**

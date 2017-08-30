@@ -17,12 +17,14 @@
 			<p><strong>Title:</strong><p>
 			<p><strong>Content:</strong><p>
 			<p><strong>URL:</strong><p>
+			<p><strong>Date:</strong><p>
 			<p><strong>User:</strong><p>
 		</div>
 		<div class="col-md-10" style="background-color:#EEE">
 			<p>{{ ($post->title) }}</p>
 			<p>{{ ($post->content) }}</p>
 			<p>{{ ($post->url) }}</p>
+			<p>{{ ($post->created_at->setTimezone('America/Chicago')->format('F jS, Y ')) }}</p>
 			<p>{{ ($post->created_by) }}</p>
 			<br>
 		</div>

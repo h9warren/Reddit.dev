@@ -16,7 +16,7 @@
 			<p><strong>Title:</strong><p>
 			<p><strong>Content:</strong><p>
 			<p><strong>URL:</strong><p>
-			<p><strong>Post:</strong><p>
+			<p><strong>Date:</strong><p>
 			<p><strong>User:</strong><p>
 		</div>
 		<div class="col-md-6" style="background-color:#EEE">
@@ -24,7 +24,7 @@
 			</a></p>
 			<p>{{ ($post->content) }}</p>
 			<p>{{ ($post->url) }}</p>
-			<p>{{ ($post->id) }}</p>
+			<p>{{ ($post->created_at->setTimezone('America/Chicago')->format('F jS, Y ')) }}</p>
 			<p>{{ ($post->created_by) }}</p>
 			<br>
 		</div>
@@ -32,9 +32,9 @@
 	</div>
 		
 		@endforeach
-
-		{!! $posts->render() !!}
-
+		<div class="col-md-offset-2 col-md-6">
+			{!! $posts->render() !!}
+		</div>
 </div>
 
 @stop
