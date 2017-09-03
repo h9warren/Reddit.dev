@@ -16,6 +16,7 @@ class CreatePostTable extends Migration
         {
             $table->increments('id');
             $table->string('title');
+            $table->integer('karma');
             $table->string('url');
             $table->string('content');
             $table->integer('created_by')->unsigned();

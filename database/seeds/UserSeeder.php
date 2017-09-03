@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
             $name = new App\User();
             $name->name = $info['name'];
             $name->email = $info['email'];
-            $name->password = Hash::make($info['password']);
+            $name->password = $info['password'];
             $name->save();
 
        }

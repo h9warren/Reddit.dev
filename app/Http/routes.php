@@ -11,37 +11,34 @@
 |
 */
 
-Route::get('/uppercase/{word}', 'HomeController@uppercase');
+Route::post('/posts/{id}', 'PostsController@vote');
 
-Route::get('/increment/{number}', 'HomeController@increment');
-Route::get('/resetToZero/{number}', 'HomeController@resetToZero');
-
-
-Route::get('/add/{numberA}/{numberB}/', function ($numberA, $numberB) {
-    
-	if (is_numeric($numberA) && is_numeric($numberB)) {
-    	
-    	$sum = $numberA + $numberB;
-
-    	echo "<h1>$sum</h1>";
-	
-	} else {
-		
-    	echo "<h1>404</h1>";
-	}
-		
-});
-Route::get('/rolldice/{guess?}', function($guess = 2){
-	
-	$rando = random_int(1,6);
-	// $data['number'] = $rando;
-	$data = ['number' => $rando, 'guess' => $guess];
-	
-	return view('roll-dice', $data);
-});
 Route::get('/', 'HomeController@showWelcome');
 
 Route::resource('posts','PostsController');
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+Route::get('create-user', function() {
+	$user = new \App\User();
+	$user->name = "admin";
+	$user->email = "admin@codeup.com";
+	$user->password = "password";
+	$user->save();
+});
+
+
+
+
+
+
 
 // Route::get('orm-test', function () {
 
@@ -74,3 +71,31 @@ Route::resource('posts','PostsController');
 	
 
 
+// Route::get('/uppercase/{word}', 'HomeController@uppercase');
+
+// Route::get('/increment/{number}', 'HomeController@increment');
+// Route::get('/resetToZero/{number}', 'HomeController@resetToZero');
+
+
+// Route::get('/add/{numberA}/{numberB}/', function ($numberA, $numberB) {
+    
+// 	if (is_numeric($numberA) && is_numeric($numberB)) {
+    	
+//     	$sum = $numberA + $numberB;
+
+//     	echo "<h1>$sum</h1>";
+	
+// 	} else {
+		
+//     	echo "<h1>404</h1>";
+// 	}
+		
+// });
+// Route::get('/rolldice/{guess?}', function($guess = 2){
+	
+// 	$rando = random_int(1,6);
+// 	// $data['number'] = $rando;
+// 	$data = ['number' => $rando, 'guess' => $guess];
+	
+// 	return view('roll-dice', $data);
+// });

@@ -7,24 +7,42 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Vote;
 use Log;
 
 
 class PostsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['index', 'show', 'posts']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $posts = Post::paginate(3);
+        // $posts = Post::with('user')->paginate(4);
+ 
+        if ($request->has('q')){
+            $q = $request->q;
+            $posts = Post::search($q);
+            // $posts = Post::sort($posts);    
+            // dd($posts);
+        } else {
+            $posts = Post::with('user')->orderBy('karma', 'DESC')->paginate(4);
+        }
         $data['posts'] = $posts;
         return view('posts.index', $data);
+     }   
         
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -57,9 +75,13 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = 1;
+        $post->created_by = Auth::id();
         $post->save();
         Log::info($post);
+
+        $request->session()->flash("successMessage", "Your post was saved successfully");
+
+
 
         // var_dump($request);
 
@@ -94,8 +116,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
-        $post = Post::find($id);
+        dd($id);
         $post = Post::findOrFail($id);
         $data['post'] = $post;
         return view('posts.edit', $data);
@@ -111,15 +132,17 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = ['url'=>'required'];
-        $this->validate($request, $rules);
+        $this->validate($request, Post::$rules);
         $post = Post::find($id);
         $post = Post::findOrFail($id);
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = 1;
+        $post->created_by = Auth::id();
         $post->save();
+
+        $request->session()->flash("successMessage", "Your post was updated successfully");
+
         return \Redirect::action('PostsController@show', $post->id);
     }
 
@@ -132,10 +155,24 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
         $post = Post::findOrFail($id);
         $post->delete();
         return \Redirect::action('PostsController@index');
+    }
+
+    public function vote(Request $request, $id) {
+
+
+        $vote = new Vote();
+        $vote->user_id = Auth::id();
+        $vote->post_id = $id;
+        $vote->vote = $request->vote;
+        $vote->save();
+
+        $data['post'] = Post::find($id);
+        return view('posts.show', $data);
+
+
     }
 
 }
