@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
         $user = new User();
         $user->name = 'Justin';
         $user->email = 'justin@codeup.com';
-        $user->password = Hash::make(env('USER_PASSWORD'));
+        $user->password = env('USER_PASSWORD');
         $user->save();
         $faker = Faker\Factory::create();
         for($i = 0; $i <= 10; $i++) {

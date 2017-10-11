@@ -34,6 +34,9 @@ Route::get('create-user', function() {
 	$user->save();
 });
 
+Route::any('', 'PostsController@index');
+
+
 
 
 

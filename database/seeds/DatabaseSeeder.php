@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         DB::table('posts')->delete();
         DB::table('users')->delete();
 
-        $this->call(UserSeeder::class);
+        $this->call(UsersTableSeeder::class);
         $this->call(PostsTableSeeder::class);
 
         Model::reguard();
